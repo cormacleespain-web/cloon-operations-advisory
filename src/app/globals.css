@@ -79,6 +79,7 @@
   --chart-4: #97a58f;
   --chart-5: #b7ae95;
   --radius: 0.625rem;
+  --ease-premium: cubic-bezier(0.32, 0.72, 0, 1);
   --sidebar: #fbfaf4;
   --sidebar-foreground: #1f2a38;
   --sidebar-primary: #1f2a38;
@@ -132,6 +133,7 @@
   }
   body {
     @apply bg-background text-foreground font-sans antialiased;
+    text-rendering: optimizeLegibility;
   }
   html {
     @apply font-sans;
@@ -139,7 +141,12 @@
   }
   /* offset anchored sections so the sticky header doesn't cover headings */
   :target {
-    scroll-margin-top: 5.5rem;
+    scroll-margin-top: 6.5rem;
+  }
+  /* Premium display heading defaults */
+  .font-display {
+    font-optical-sizing: auto;
+    letter-spacing: -0.02em;
   }
 }
 
@@ -153,11 +160,83 @@
     background-size: 220px 220px, 180px 180px, 300px 300px;
     background-position: center;
   }
-  /* Uppercase serif/sans eyebrow label */
+
+  /* Pill eyebrow — hairline badge preceding major headings */
   .eyebrow {
-    @apply inline-flex items-center gap-2 text-xs font-medium uppercase tracking-[0.18em] text-sage;
+    @apply inline-flex items-center gap-2 rounded-full border border-sage/25 bg-sage/8 px-3 py-1 text-[0.7rem] font-medium uppercase tracking-[0.2em] text-sage;
+  }
+  .eyebrow-index {
+    @apply font-mono text-[0.65rem] tabular-nums text-sage/70;
+  }
+
+  /* Scoped dark band — overrides semantic tokens so children recolor for navy */
+  .section-dark {
+    --background: #131b25;
+    --foreground: #f3f0e6;
+    --card: #1c2733;
+    --card-foreground: #f3f0e6;
+    --muted-foreground: #a2adba;
+    --secondary: #22303e;
+    --border: color-mix(in oklab, #f3f0e6 14%, transparent);
+    --input: color-mix(in oklab, #f3f0e6 18%, transparent);
+    --sage: #93aa85;
+    --primary: #f3f0e6;
+    --primary-foreground: #16202b;
+    --ring: #93aa85;
+    background-color: var(--background);
+    color: var(--foreground);
+  }
+
+  /* Multi-layer diffused ambient shadow — no harsh drop shadows */
+  .shadow-premium {
+    box-shadow:
+      0 1px 2px -1px color-mix(in oklab, var(--foreground) 8%, transparent),
+      0 8px 20px -12px color-mix(in oklab, var(--foreground) 22%, transparent),
+      0 24px 48px -28px color-mix(in oklab, var(--foreground) 26%, transparent);
+  }
+  .shadow-premium-lg {
+    box-shadow:
+      0 2px 4px -2px color-mix(in oklab, var(--foreground) 10%, transparent),
+      0 16px 40px -18px color-mix(in oklab, var(--foreground) 24%, transparent),
+      0 40px 80px -40px color-mix(in oklab, var(--foreground) 30%, transparent);
+  }
+
+  /* Double-bezel: nested enclosure. Outer shell + inner core with concentric radii */
+  .bezel-shell {
+    @apply rounded-[1.75rem] border border-border/70 bg-card/40 p-1.5;
+  }
+  .bezel-core {
+    @apply rounded-[calc(1.75rem-0.375rem)] bg-card;
+    box-shadow: inset 0 1px 1px color-mix(in oklab, var(--foreground) 6%, transparent);
+  }
+
+  /* Fixed film-grain overlay for physical, editorial texture */
+  .grain-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 30;
+    pointer-events: none;
+    opacity: 0.035;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
   }
 }
+
+/* Slow facet drift for the hero centerpiece (GPU-safe: transform only) */
+@keyframes facet-drift-a {
+  0%, 100% { transform: translate3d(0, 0, 0) rotate(0deg); }
+  50% { transform: translate3d(-14px, 10px, 0) rotate(-1.4deg); }
+}
+@keyframes facet-drift-b {
+  0%, 100% { transform: translate3d(0, 0, 0) rotate(0deg); }
+  50% { transform: translate3d(16px, -12px, 0) rotate(1.6deg); }
+}
+@keyframes facet-drift-c {
+  0%, 100% { transform: translate3d(0, 0, 0); }
+  50% { transform: translate3d(-8px, -8px, 0); }
+}
+.facet-layer-a { animation: facet-drift-a 18s ease-in-out infinite; transform-box: fill-box; transform-origin: center; }
+.facet-layer-b { animation: facet-drift-b 22s ease-in-out infinite; transform-box: fill-box; transform-origin: center; }
+.facet-layer-c { animation: facet-drift-c 14s ease-in-out infinite; transform-box: fill-box; transform-origin: center; }
 
 /* Honor reduced-motion for scroll and transitions */
 @media (prefers-reduced-motion: reduce) {

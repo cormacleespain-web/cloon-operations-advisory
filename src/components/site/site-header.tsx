@@ -26,100 +26,108 @@ export function SiteHeader() {
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 8);
+    const onScroll = () => setScrolled(window.scrollY > 12);
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
   return (
-    <header
-      className={cn(
-        "sticky top-0 z-40 w-full border-b bg-background/80 backdrop-blur-md transition-colors",
-        scrolled ? "border-border" : "border-transparent"
-      )}
-    >
-      <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4 sm:px-6 lg:px-8">
-        <a
-          href="#top"
-          className="rounded-md focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ring"
-          aria-label="Cloon Operations Advisory — back to top"
+    <header className="fixed inset-x-0 top-0 z-40">
+      <div className="mx-auto max-w-6xl px-4 pt-4 sm:px-6 sm:pt-5">
+        <div
+          className={cn(
+            "flex items-center justify-between gap-4 rounded-full border py-2 pl-5 pr-2 backdrop-blur-xl transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)]",
+            scrolled
+              ? "border-border/70 bg-background/75 shadow-premium"
+              : "border-transparent bg-background/40"
+          )}
         >
-          <Wordmark variant="compact" />
-        </a>
+          <a
+            href="#top"
+            className="rounded-full focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ring"
+            aria-label="Cloon Operations Advisory — back to top"
+          >
+            <Wordmark variant="compact" />
+          </a>
 
-        {/* Desktop nav */}
-        <nav aria-label="Primary" className="hidden md:block">
-          <ul className="flex items-center gap-1">
-            {NAV_ITEMS.map((item) => (
-              <li key={item.href}>
-                <a
-                  href={item.href}
-                  className="inline-flex h-9 items-center rounded-md px-3 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground focus-visible:text-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
-                >
-                  {item.label}
-                </a>
-              </li>
-            ))}
-          </ul>
-        </nav>
+          {/* Desktop nav */}
+          <nav aria-label="Primary" className="hidden md:block">
+            <ul className="flex items-center gap-1">
+              {NAV_ITEMS.map((item) => (
+                <li key={item.href}>
+                  <a
+                    href={item.href}
+                    className="inline-flex h-9 items-center rounded-full px-4 text-sm font-medium text-muted-foreground transition-colors duration-300 hover:text-foreground focus-visible:text-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
+                  >
+                    {item.label}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </nav>
 
-        <div className="hidden md:block">
           <a
             href="#contact"
-            className={cn(buttonVariants({ size: "lg" }), "h-11 px-5")}
+            className={cn(
+              buttonVariants({ size: "lg" }),
+              "hidden h-11 rounded-full px-5 transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] active:scale-[0.98] md:inline-flex"
+            )}
           >
             Get in touch
           </a>
-        </div>
 
-        {/* Mobile menu */}
-        <Sheet open={open} onOpenChange={setOpen}>
-          <SheetTrigger
-            render={
-              <button
-                type="button"
-                aria-label="Open menu"
-                className={cn(
-                  buttonVariants({ variant: "outline", size: "icon" }),
-                  "size-11 md:hidden"
-                )}
-              />
-            }
-          >
-            <MenuIcon />
-          </SheetTrigger>
-          <SheetContent side="right" className="w-72">
-            <SheetHeader className="border-b">
-              <SheetTitle className="sr-only">Menu</SheetTitle>
-              <Wordmark variant="compact" />
-            </SheetHeader>
-            <nav aria-label="Mobile" className="px-2">
-              <ul className="flex flex-col gap-1">
-                {NAV_ITEMS.map((item) => (
-                  <li key={item.href}>
-                    <a
-                      href={item.href}
-                      onClick={() => setOpen(false)}
-                      className="flex min-h-11 items-center rounded-md px-3 text-base font-medium text-foreground transition-colors hover:bg-accent focus-visible:bg-accent focus-visible:outline-none"
-                    >
-                      {item.label}
-                    </a>
-                  </li>
-                ))}
-              </ul>
-            </nav>
-            <div className="mt-auto p-4">
-              <a
-                href="#contact"
-                onClick={() => setOpen(false)}
-                className={cn(buttonVariants({ size: "lg" }), "h-11 w-full")}
-              >
-                Get in touch
-              </a>
-            </div>
-          </SheetContent>
-        </Sheet>
+          {/* Mobile menu */}
+          <Sheet open={open} onOpenChange={setOpen}>
+            <SheetTrigger
+              render={
+                <button
+                  type="button"
+                  aria-label="Open menu"
+                  className={cn(
+                    buttonVariants({ variant: "outline", size: "icon" }),
+                    "size-11 rounded-full md:hidden"
+                  )}
+                />
+              }
+            >
+              <MenuIcon strokeWidth={1.75} />
+            </SheetTrigger>
+            <SheetContent side="right" className="w-80 border-l-0">
+              <SheetHeader className="border-b">
+                <SheetTitle className="sr-only">Menu</SheetTitle>
+                <Wordmark variant="compact" />
+              </SheetHeader>
+              <nav aria-label="Mobile" className="px-3">
+                <ul className="flex flex-col gap-1">
+                  {NAV_ITEMS.map((item) => (
+                    <li key={item.href}>
+                      <a
+                        href={item.href}
+                        onClick={() => setOpen(false)}
+                        className="flex min-h-12 items-center rounded-xl px-4 text-lg font-medium text-foreground transition-colors hover:bg-accent focus-visible:bg-accent focus-visible:outline-none"
+                      >
+                        {item.label}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </nav>
+              <div className="mt-auto p-4">
+                <a
+                  href="#contact"
+                  onClick={() => setOpen(false)}
+                  className={cn(
+                    buttonVariants({ size: "lg" }),
+                    "h-12 w-full rounded-full"
+                  )}
+                >
+                  Get in touch
+                </a>
+              </div>
+            </SheetContent>
+          </Sheet>
+        </div>
       </div>
     </header>
   );

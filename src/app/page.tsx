@@ -4,6 +4,7 @@ import { Hero } from "@/components/sections/hero";
 import { Services } from "@/components/sections/services";
 import { Approach } from "@/components/sections/approach";
 import { About } from "@/components/sections/about";
+import { Positioning } from "@/components/sections/positioning";
 import { Contact } from "@/components/sections/contact";
 
 export default function Home() {
@@ -15,6 +16,7 @@ export default function Home() {
         <Services />
         <Approach />
         <About />
+        <Positioning />
         <Contact />
       </main>
       <SiteFooter />

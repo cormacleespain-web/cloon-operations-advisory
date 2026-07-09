@@ -40,8 +40,8 @@ export function Reveal({ className, delay = 0, style, ...props }: RevealProps) {
       data-reveal={shown ? "shown" : "hidden"}
       style={{ transitionDelay: shown ? `${delay}ms` : "0ms", ...style }}
       className={cn(
-        "motion-safe:transition motion-safe:duration-700 motion-safe:ease-out",
-        !shown && "motion-safe:translate-y-4 motion-safe:opacity-0",
+        "motion-safe:transition-all motion-safe:duration-[900ms] motion-safe:ease-[cubic-bezier(0.32,0.72,0,1)]",
+        !shown && "motion-safe:translate-y-8 motion-safe:opacity-0 motion-safe:blur-[6px]",
         className
       )}
       {...props}

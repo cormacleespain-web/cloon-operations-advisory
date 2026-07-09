@@ -16,7 +16,8 @@ const fraunces = Fraunces({
   variable: "--font-fraunces",
   subsets: ["latin"],
   display: "swap",
-  axes: ["opsz", "SOFT"],
+  style: ["normal", "italic"],
+  axes: ["opsz", "SOFT", "WONK"],
 });
 
 export const metadata: Metadata = {
@@ -65,6 +66,8 @@ export default function RootLayout({
         >
           Skip to content
         </a>
+        {/* Fixed film-grain overlay for editorial paper texture */}
+        <div className="grain-overlay" aria-hidden />
         {children}
       </body>
     </html>

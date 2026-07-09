@@ -1,4 +1,5 @@
 import { LogoMark } from "@/components/brand/logo-mark";
+import { FacetField } from "@/components/brand/facet-field";
 import { Reveal } from "@/components/site/reveal";
 
 /*
@@ -8,15 +9,15 @@ import { Reveal } from "@/components/site/reveal";
  */
 export function About() {
   return (
-    <section id="about" className="scroll-mt-24 border-b bg-card">
-      <div className="mx-auto max-w-6xl px-4 py-20 sm:px-6 sm:py-24 lg:px-8">
-        <div className="grid gap-12 lg:grid-cols-[1.3fr_0.7fr] lg:gap-16">
+    <section id="about" className="scroll-mt-28 border-b border-border/60 bg-background">
+      <div className="mx-auto max-w-6xl px-6 py-24 sm:py-32 lg:px-8">
+        <div className="grid items-center gap-14 lg:grid-cols-[1.25fr_0.75fr] lg:gap-20">
           <Reveal>
             <p className="eyebrow">About</p>
-            <h2 className="mt-3 font-display text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">
-              Hello, I&apos;m Conor Lee
+            <h2 className="mt-6 text-balance font-display text-4xl font-medium leading-[1.05] tracking-[-0.02em] text-foreground sm:text-5xl">
+              Hello, I&apos;m <span className="italic font-light">Conor Lee</span>
             </h2>
-            <div className="mt-6 space-y-4 text-lg leading-relaxed text-muted-foreground">
+            <div className="mt-8 space-y-5 text-lg leading-relaxed text-muted-foreground">
               <p>
                 I&apos;ve spent [X years] in supply chain and operations across
                 [industries — e.g. medical devices, food, manufacturing],
@@ -39,13 +40,12 @@ export function About() {
             </div>
           </Reveal>
 
-          <Reveal delay={80} className="flex items-center justify-center">
-            <div className="relative flex aspect-square w-full max-w-xs items-center justify-center overflow-hidden rounded-2xl border bg-background">
-              <div
-                aria-hidden
-                className="motif-facets absolute inset-0 opacity-40"
-              />
-              <LogoMark decorative className="relative size-28" />
+          <Reveal delay={90}>
+            <div className="bezel-shell shadow-premium">
+              <div className="bezel-core relative flex aspect-[4/5] items-center justify-center overflow-hidden">
+                <FacetField className="absolute inset-0 opacity-80" />
+                <LogoMark decorative className="relative size-32" />
+              </div>
             </div>
           </Reveal>
         </div>

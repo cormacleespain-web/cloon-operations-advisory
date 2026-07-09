@@ -10,8 +10,21 @@
 | 2026-07-09 | cloon-landing | 5 | accessibility-general routing (contrast, forms, keyboard, nav, motion-safe) | — |
 | 2026-07-09 | cloon-landing | 6 | content-design + plain-language (example copy) | — |
 | 2026-07-09 | cloon-landing | 7 | inline QA (Preview MCP) — subagent skipped (off-by-default) | — |
+| 2026-07-09 | cloon-premium-restyle | 0–3 | high-end-visual-design (primary) + ui-ux-pro-max tokens | ui-ux-pro-max styling role, minimalist-ui, design-taste-frontend (v1+v2), gpt-taste, industrial-brutalist-ui, stitch-design-taste |
+| 2026-07-09 | cloon-premium-restyle | 4 | emil-design-eng (elevated: parallax drift, staggered blur reveals, magnetic hover) | — |
+| 2026-07-09 | cloon-premium-restyle | 7 | inline QA + impeccable critique (applied: de-numbered eyebrows, text-balance; noted conflicts kept per primary authority) | — |
 
 ---
+
+## 2026-07-09 — cloon-premium-restyle — Stages 0–7
+**Ran:** `high-end-visual-design` as primary authority (Editorial Luxury archetype:
+double-bezel, button-in-button, floating pill nav, grain, macro-whitespace, custom
+easing), `impeccable` as on-demand polish (removed numbered-eyebrow AI-tells, added
+text-balance). `ui-ux-pro-max` tokens retained.
+**Conflict noted:** impeccable discourages nested cards + per-section eyebrows, which
+`high-end-visual-design` endorses. Kept per the one-authority rule (primary wins on
+pure-aesthetic conflicts); logged for traceability.
+**Suppressed:** rest of the taste cluster (suppression table for high-end-visual-design).
 
 ## 2026-07-09 — cloon-landing — Stage 0
 **Ran:** intake + `clash-resolution` decision framework.

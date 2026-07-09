@@ -45,3 +45,19 @@ larger sizes only.
 - Stock corporate blue.
 - Over-animation (no parallax, no scroll-jacking).
 - Sage green as body text or large fills — it's an accent.
+- Numbered eyebrows (01/02) above every section — numbers only where the order is real
+  (the Approach step sequence). Per impeccable AI-tell.
+
+## Premium elevation (2026-07-09, via high-end-visual-design + impeccable)
+- **Editorial Luxury archetype:** warm cream base + dramatic full-bleed **navy bands**
+  (`.section-dark` scopes token overrides) for light/dark rhythm.
+- **Type:** larger editorial display scale, Fraunces italic accents (`WONK` axis),
+  `text-wrap: balance` on headings, optical sizing.
+- **Materials:** fixed film-grain overlay (`.grain-overlay`), multi-layer soft shadows
+  (`.shadow-premium`/`-lg`), double-bezel nested cards (`.bezel-shell` + `.bezel-core`,
+  concentric radii), hairline borders.
+- **Nav:** floating glass pill (backdrop-blur), not an edge-to-edge sticky bar.
+- **CTAs:** pill "button-in-button" — nested circular trailing arrow, magnetic hover.
+- **Motion:** `--ease-premium: cubic-bezier(0.32,0.72,0,1)`; blur+lift staggered reveals
+  (`Reveal`, `motion-safe` only); slow facet-field drift (`facet-drift-a/b/c`,
+  transform-only, frozen under reduced-motion). Signature: `FacetField` hero centerpiece.

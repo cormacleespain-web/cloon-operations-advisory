@@ -26,37 +26,40 @@ const STEPS = [
 
 export function Approach() {
   return (
-    <section id="approach" className="scroll-mt-24 border-b bg-background">
-      <div className="mx-auto max-w-6xl px-4 py-20 sm:px-6 sm:py-24 lg:px-8">
-        <div className="grid gap-12 lg:grid-cols-[0.8fr_1.2fr] lg:gap-16">
+    <section id="approach" className="section-dark relative scroll-mt-28 overflow-hidden">
+      <div
+        aria-hidden
+        className="motif-facets pointer-events-none absolute inset-0 opacity-[0.5] [mask-image:radial-gradient(ellipse_at_top_left,black,transparent_65%)]"
+      />
+      <div className="relative mx-auto max-w-6xl px-6 py-24 sm:py-32 lg:px-8">
+        <div className="grid gap-14 lg:grid-cols-[0.85fr_1.15fr] lg:gap-20">
           <Reveal>
             <p className="eyebrow">How I work</p>
-            <h2 className="mt-3 font-display text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">
+            <h2 className="mt-6 text-balance font-display text-4xl font-medium leading-[1.05] tracking-[-0.02em] text-foreground sm:text-5xl">
               A grounded, practical way of working
             </h2>
-            <p className="mt-4 text-lg text-muted-foreground">
+            <p className="mt-6 text-lg leading-relaxed text-muted-foreground">
               No thick reports left on a shelf. Just clear diagnosis, sensible
               priorities, and changes that make the day-to-day genuinely
               easier.
             </p>
           </Reveal>
 
-          <ol className="relative space-y-10 border-l border-border pl-8">
+          <ol className="relative space-y-px">
             {STEPS.map((step, i) => (
-              <Reveal key={step.n} delay={i * 70}>
-                <li className="relative">
-                  <span
-                    aria-hidden
-                    className="absolute -left-[2.6rem] flex size-8 items-center justify-center rounded-full border bg-card font-mono text-xs font-medium text-sage"
-                  >
+              <Reveal key={step.n} delay={i * 90}>
+                <li className="group grid grid-cols-[auto_1fr] gap-6 border-t border-border/70 py-7 transition-colors duration-500 hover:border-sage/50">
+                  <span className="font-display text-2xl font-light text-sage tabular-nums">
                     {step.n}
                   </span>
-                  <h3 className="text-lg font-semibold text-foreground">
-                    {step.title}
-                  </h3>
-                  <p className="mt-2 leading-relaxed text-muted-foreground">
-                    {step.body}
-                  </p>
+                  <div>
+                    <h3 className="text-xl font-medium text-foreground">
+                      {step.title}
+                    </h3>
+                    <p className="mt-2 leading-relaxed text-muted-foreground">
+                      {step.body}
+                    </p>
+                  </div>
                 </li>
               </Reveal>
             ))}
