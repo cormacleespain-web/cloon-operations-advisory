@@ -7,9 +7,12 @@
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-sans);
+  --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
-  --font-heading: var(--font-sans);
+  --font-display: var(--font-fraunces);
+  --font-heading: var(--font-geist-sans);
+  --color-sage: var(--sage);
+  --color-sage-foreground: var(--sage-foreground);
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
@@ -49,72 +52,78 @@
 }
 
 :root {
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.145 0 0);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.145 0 0);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.145 0 0);
-  --primary: oklch(0.205 0 0);
-  --primary-foreground: oklch(0.985 0 0);
-  --secondary: oklch(0.97 0 0);
-  --secondary-foreground: oklch(0.205 0 0);
-  --muted: oklch(0.97 0 0);
-  --muted-foreground: oklch(0.556 0 0);
-  --accent: oklch(0.97 0 0);
-  --accent-foreground: oklch(0.205 0 0);
-  --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.922 0 0);
-  --input: oklch(0.922 0 0);
-  --ring: oklch(0.708 0 0);
-  --chart-1: oklch(0.87 0 0);
-  --chart-2: oklch(0.556 0 0);
-  --chart-3: oklch(0.439 0 0);
-  --chart-4: oklch(0.371 0 0);
-  --chart-5: oklch(0.269 0 0);
+  /* Cloon Operations Advisory — light (primary) */
+  --background: #f4f1e7; /* cream */
+  --foreground: #1f2a38; /* ink navy */
+  --card: #fbfaf4; /* warm white */
+  --card-foreground: #1f2a38;
+  --popover: #fbfaf4;
+  --popover-foreground: #1f2a38;
+  --primary: #1f2a38; /* ink navy */
+  --primary-foreground: #f7f5ec;
+  --secondary: #e8e3d3;
+  --secondary-foreground: #1f2a38;
+  --muted: #eae5d6;
+  --muted-foreground: #515c6b; /* slate, darkened for AA on cream */
+  --accent: #e8e3d3; /* warm hover surface */
+  --accent-foreground: #1f2a38;
+  --sage: #5a6e52; /* Burren sage — brand accent */
+  --sage-foreground: #f7f5ec;
+  --destructive: #a3402f;
+  --border: #e1dccb;
+  --input: #d8d2c0;
+  --ring: #5a6e52;
+  --chart-1: #5a6e52;
+  --chart-2: #6e7f92;
+  --chart-3: #1f2a38;
+  --chart-4: #97a58f;
+  --chart-5: #b7ae95;
   --radius: 0.625rem;
-  --sidebar: oklch(0.985 0 0);
-  --sidebar-foreground: oklch(0.145 0 0);
-  --sidebar-primary: oklch(0.205 0 0);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.97 0 0);
-  --sidebar-accent-foreground: oklch(0.205 0 0);
-  --sidebar-border: oklch(0.922 0 0);
-  --sidebar-ring: oklch(0.708 0 0);
+  --sidebar: #fbfaf4;
+  --sidebar-foreground: #1f2a38;
+  --sidebar-primary: #1f2a38;
+  --sidebar-primary-foreground: #f7f5ec;
+  --sidebar-accent: #e8e3d3;
+  --sidebar-accent-foreground: #1f2a38;
+  --sidebar-border: #e1dccb;
+  --sidebar-ring: #5a6e52;
 }
 
 .dark {
-  --background: oklch(0.145 0 0);
-  --foreground: oklch(0.985 0 0);
-  --card: oklch(0.205 0 0);
-  --card-foreground: oklch(0.985 0 0);
-  --popover: oklch(0.205 0 0);
-  --popover-foreground: oklch(0.985 0 0);
-  --primary: oklch(0.922 0 0);
-  --primary-foreground: oklch(0.205 0 0);
-  --secondary: oklch(0.269 0 0);
-  --secondary-foreground: oklch(0.985 0 0);
-  --muted: oklch(0.269 0 0);
-  --muted-foreground: oklch(0.708 0 0);
-  --accent: oklch(0.269 0 0);
-  --accent-foreground: oklch(0.985 0 0);
-  --destructive: oklch(0.704 0.191 22.216);
-  --border: oklch(1 0 0 / 10%);
-  --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.556 0 0);
-  --chart-1: oklch(0.87 0 0);
-  --chart-2: oklch(0.556 0 0);
-  --chart-3: oklch(0.439 0 0);
-  --chart-4: oklch(0.371 0 0);
-  --chart-5: oklch(0.269 0 0);
-  --sidebar: oklch(0.205 0 0);
-  --sidebar-foreground: oklch(0.985 0 0);
-  --sidebar-primary: oklch(0.488 0.243 264.376);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.269 0 0);
-  --sidebar-accent-foreground: oklch(0.985 0 0);
-  --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.556 0 0);
+  /* Cloon Operations Advisory — dark (optional) */
+  --background: #161f2a;
+  --foreground: #f1eee2;
+  --card: #1f2a38;
+  --card-foreground: #f1eee2;
+  --popover: #1f2a38;
+  --popover-foreground: #f1eee2;
+  --primary: #f1eee2;
+  --primary-foreground: #1f2a38;
+  --secondary: #26313f;
+  --secondary-foreground: #f1eee2;
+  --muted: #26313f;
+  --muted-foreground: #9aa6b4;
+  --accent: #26313f;
+  --accent-foreground: #f1eee2;
+  --sage: #8ca37f; /* lightened for contrast on navy */
+  --sage-foreground: #10151c;
+  --destructive: #d16a58;
+  --border: color-mix(in oklab, #f1eee2 12%, transparent);
+  --input: color-mix(in oklab, #f1eee2 16%, transparent);
+  --ring: #8ca37f;
+  --chart-1: #8ca37f;
+  --chart-2: #6e7f92;
+  --chart-3: #f1eee2;
+  --chart-4: #97a58f;
+  --chart-5: #b7ae95;
+  --sidebar: #1f2a38;
+  --sidebar-foreground: #f1eee2;
+  --sidebar-primary: #8ca37f;
+  --sidebar-primary-foreground: #10151c;
+  --sidebar-accent: #26313f;
+  --sidebar-accent-foreground: #f1eee2;
+  --sidebar-border: color-mix(in oklab, #f1eee2 12%, transparent);
+  --sidebar-ring: #8ca37f;
 }
 
 @layer base {
@@ -122,9 +131,44 @@
     @apply border-border outline-ring/50;
   }
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground font-sans antialiased;
   }
   html {
     @apply font-sans;
+    scroll-behavior: smooth;
+  }
+  /* offset anchored sections so the sticky header doesn't cover headings */
+  :target {
+    scroll-margin-top: 5.5rem;
+  }
+}
+
+@layer components {
+  /* Faceted geometric motif echoing the logo — thin low-opacity lines */
+  .motif-facets {
+    background-image:
+      linear-gradient(115deg, transparent 0 49.7%, color-mix(in oklab, var(--sage) 22%, transparent) 49.7% 50.3%, transparent 50.3%),
+      linear-gradient(65deg, transparent 0 49.7%, color-mix(in oklab, var(--foreground) 10%, transparent) 49.7% 50.3%, transparent 50.3%),
+      linear-gradient(160deg, transparent 0 49.8%, color-mix(in oklab, var(--foreground) 8%, transparent) 49.8% 50.2%, transparent 50.2%);
+    background-size: 220px 220px, 180px 180px, 300px 300px;
+    background-position: center;
+  }
+  /* Uppercase serif/sans eyebrow label */
+  .eyebrow {
+    @apply inline-flex items-center gap-2 text-xs font-medium uppercase tracking-[0.18em] text-sage;
+  }
+}
+
+/* Honor reduced-motion for scroll and transitions */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
   }
 }

@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Geist, Geist_Mono, Fraunces } from "next/font/google";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -12,9 +12,27 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+const fraunces = Fraunces({
+  variable: "--font-fraunces",
+  subsets: ["latin"],
+  display: "swap",
+  axes: ["opsz", "SOFT"],
+});
+
 export const metadata: Metadata = {
-  title: "Cloon Operations Advisory",
-  description: "Cloon Operations Advisory",
+  title: "Cloon Operations Advisory — Supply Chain & Operations Consulting",
+  description:
+    "Cloon Operations Advisory helps businesses strengthen their supply chain and operations — practical, grounded advisory led by Conor Lee.",
+  metadataBase: new URL("https://cloon.ie"),
+  openGraph: {
+    title: "Cloon Operations Advisory",
+    description:
+      "Practical supply chain and operations advisory led by Conor Lee.",
+    url: "https://cloon.ie",
+    siteName: "Cloon Operations Advisory",
+    locale: "en_IE",
+    type: "website",
+  },
 };
 
 export default function RootLayout({
@@ -25,9 +43,28 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+      suppressHydrationWarning
+      className={`${geistSans.variable} ${geistMono.variable} ${fraunces.variable} h-full antialiased`}
     >
+      <head>
+        {/* Respect the OS colour-scheme preference before paint (no flash). */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `try{if(matchMedia('(prefers-color-scheme: dark)').matches){document.documentElement.classList.add('dark')}}catch(e){}`,
+          }}
+        />
+        <noscript>
+          {/* Without JS, reveal-on-scroll never fires — force content visible. */}
+          <style>{`[data-reveal]{opacity:1 !important;transform:none !important;}`}</style>
+        </noscript>
+      </head>
       <body className="min-h-full flex flex-col bg-background text-foreground">
+        <a
+          href="#main"
+          className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 focus:rounded-md focus:bg-primary focus:px-4 focus:py-2 focus:text-primary-foreground"
+        >
+          Skip to content
+        </a>
         {children}
       </body>
     </html>
