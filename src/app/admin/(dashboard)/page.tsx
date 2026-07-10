@@ -55,7 +55,7 @@ export default async function AdminOverviewPage() {
                         ? `Published ${status.publishedAt.toLocaleDateString("en-IE", { day: "numeric", month: "short", year: "numeric" })}`
                         : "Not published yet"}
                     </span>
-                    <span className="inline-flex items-center gap-1 font-medium text-foreground opacity-0 transition-opacity group-hover:opacity-100">
+                    <span className="inline-flex items-center gap-1 font-medium text-foreground opacity-60 transition-opacity group-hover:opacity-100">
                       Edit
                       <ArrowUpRight className="size-3.5" strokeWidth={1.75} aria-hidden />
                     </span>
