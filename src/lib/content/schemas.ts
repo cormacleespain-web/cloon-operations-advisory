@@ -2,7 +2,7 @@ import { z } from "zod";
 
 import { ICONS } from "./icons";
 
-const href = z
+export const href = z
   .string()
   .trim()
   .min(1, "Enter a link.")
@@ -235,4 +235,14 @@ export function inlineDocFromParts(parts: DocPart[]): RichInline {
     type: "doc",
     content: [{ type: "paragraph", content: partsToTextNodes(parts) }],
   };
+}
+
+/** An empty multi-paragraph doc, for seeding new list items in the editor. */
+export function emptyRichText(): RichText {
+  return { type: "doc", content: [{ type: "paragraph", content: [] }] };
+}
+
+/** An empty single-line doc, for seeding new list items in the editor. */
+export function emptyRichInline(): RichInline {
+  return { type: "doc", content: [{ type: "paragraph", content: [] }] };
 }
