@@ -51,6 +51,18 @@ export async function getDraftContent<K extends SectionKey>(
   return parseOrDefault(key, row?.draft ?? row?.published);
 }
 
+/** Draft content for every section — used by the admin draft preview. */
+export async function getAllDraftContent(): Promise<PublishedContent> {
+  const rows = await db.select().from(contentSections);
+  const byKey = new Map(rows.map((r) => [r.key, r]));
+
+  const entries = sectionKeys.map((key) => {
+    const row = byKey.get(key);
+    return [key, parseOrDefault(key, row?.draft ?? row?.published)] as const;
+  });
+  return Object.fromEntries(entries) as PublishedContent;
+}
+
 /**
  * `new Date()` in a Server Component needs a cached or request-bound data
  * source under Cache Components — this satisfies that for the footer's
