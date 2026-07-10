@@ -1,12 +1,12 @@
 "use client";
 
-import { useState } from "react";
 import Image from "next/image";
 import { ImageOff } from "lucide-react";
 
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { MediaPicker } from "@/components/admin/media/media-picker";
 
 export function ImageField({
   label,
@@ -17,8 +17,6 @@ export function ImageField({
   value: { url: string; alt: string } | null;
   onChange: (value: { url: string; alt: string } | null) => void;
 }) {
-  const [addingUrl, setAddingUrl] = useState("");
-
   return (
     <div className="space-y-3">
       <Label>{label}</Label>
@@ -34,9 +32,14 @@ export function ImageField({
             className="h-11 w-full max-w-sm rounded-xl bg-background"
             aria-label="Image alt text"
           />
-          <Button type="button" variant="outline" size="sm" onClick={() => onChange(null)}>
-            Remove image
-          </Button>
+          <div className="flex gap-2">
+            <MediaPicker onSelect={(item) => onChange({ url: item.url, alt: item.alt })}>
+              Replace image
+            </MediaPicker>
+            <Button type="button" variant="outline" size="sm" onClick={() => onChange(null)}>
+              Remove image
+            </Button>
+          </div>
         </div>
       ) : (
         <div className="flex max-w-sm flex-col gap-3">
@@ -44,25 +47,9 @@ export function ImageField({
             <ImageOff className="size-6" strokeWidth={1.5} aria-hidden />
             <span className="text-xs">No image</span>
           </div>
-          <Input
-            value={addingUrl}
-            onChange={(e) => setAddingUrl(e.target.value)}
-            placeholder="Paste an image address"
-            className="h-11 rounded-xl bg-background"
-            aria-label="Image address"
-          />
-          <Button
-            type="button"
-            variant="outline"
-            size="sm"
-            disabled={!addingUrl.trim()}
-            onClick={() => {
-              onChange({ url: addingUrl.trim(), alt: "" });
-              setAddingUrl("");
-            }}
-          >
-            Use this image
-          </Button>
+          <MediaPicker onSelect={(item) => onChange({ url: item.url, alt: item.alt })}>
+            Choose image
+          </MediaPicker>
         </div>
       )}
     </div>

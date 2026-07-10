@@ -59,6 +59,8 @@ export const media = pgTable("media", {
   createdAt: timestamp("created_at").defaultNow().notNull(),
 });
 
+export type MediaRow = typeof media.$inferSelect;
+
 // identifier = "email:<address>" or "ip:<address>"
 export const loginAttempts = pgTable("login_attempts", {
   identifier: text("identifier").primaryKey(),
