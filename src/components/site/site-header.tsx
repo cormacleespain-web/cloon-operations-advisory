@@ -13,15 +13,10 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import { Wordmark } from "@/components/brand/wordmark";
+import type { NavigationContent } from "@/lib/content/schemas";
 
-const NAV_ITEMS = [
-  { href: "#services", label: "Services" },
-  { href: "#approach", label: "Approach" },
-  { href: "#about", label: "About" },
-  { href: "#contact", label: "Contact" },
-];
-
-export function SiteHeader() {
+export function SiteHeader({ content }: { content: NavigationContent }) {
+  const navItems = content.items;
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
 
@@ -54,7 +49,7 @@ export function SiteHeader() {
           {/* Desktop nav */}
           <nav aria-label="Primary" className="hidden md:block">
             <ul className="flex items-center gap-1">
-              {NAV_ITEMS.map((item) => (
+              {navItems.map((item) => (
                 <li key={item.href}>
                   <a
                     href={item.href}
@@ -68,13 +63,13 @@ export function SiteHeader() {
           </nav>
 
           <a
-            href="#contact"
+            href={content.cta.href}
             className={cn(
               buttonVariants({ size: "lg" }),
               "hidden h-11 rounded-full px-5 transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] active:scale-[0.98] md:inline-flex"
             )}
           >
-            Get in touch
+            {content.cta.label}
           </a>
 
           {/* Mobile menu */}
@@ -100,7 +95,7 @@ export function SiteHeader() {
               </SheetHeader>
               <nav aria-label="Mobile" className="px-3">
                 <ul className="flex flex-col gap-1">
-                  {NAV_ITEMS.map((item) => (
+                  {navItems.map((item) => (
                     <li key={item.href}>
                       <a
                         href={item.href}
@@ -115,14 +110,14 @@ export function SiteHeader() {
               </nav>
               <div className="mt-auto p-4">
                 <a
-                  href="#contact"
+                  href={content.cta.href}
                   onClick={() => setOpen(false)}
                   className={cn(
                     buttonVariants({ size: "lg" }),
                     "h-12 w-full rounded-full"
                   )}
                 >
-                  Get in touch
+                  {content.cta.label}
                 </a>
               </div>
             </SheetContent>

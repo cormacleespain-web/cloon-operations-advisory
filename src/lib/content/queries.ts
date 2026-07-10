@@ -51,6 +51,17 @@ export async function getDraftContent<K extends SectionKey>(
   return parseOrDefault(key, row?.draft ?? row?.published);
 }
 
+/**
+ * `new Date()` in a Server Component needs a cached or request-bound data
+ * source under Cache Components — this satisfies that for the footer's
+ * copyright year (revalidates daily, which is more than often enough).
+ */
+export async function getCurrentYear(): Promise<number> {
+  "use cache";
+  cacheLife("days");
+  return new Date().getFullYear();
+}
+
 export type SectionStatus = {
   key: SectionKey;
   hasUnpublishedChanges: boolean;

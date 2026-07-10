@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono, Fraunces } from "next/font/google";
 import "./globals.css";
 
+import { getPublishedContent } from "@/lib/content/queries";
+
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -20,21 +22,22 @@ const fraunces = Fraunces({
   axes: ["opsz", "SOFT", "WONK"],
 });
 
-export const metadata: Metadata = {
-  title: "Cloon Operations Advisory — Supply Chain & Operations Consulting",
-  description:
-    "Cloon Operations Advisory helps businesses strengthen their supply chain and operations — practical, grounded advisory led by Conor Lee.",
-  metadataBase: new URL("https://cloon.ie"),
-  openGraph: {
-    title: "Cloon Operations Advisory",
-    description:
-      "Practical supply chain and operations advisory led by Conor Lee.",
-    url: "https://cloon.ie",
-    siteName: "Cloon Operations Advisory",
-    locale: "en_IE",
-    type: "website",
-  },
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const { settings } = await getPublishedContent();
+  return {
+    title: settings.title,
+    description: settings.description,
+    metadataBase: new URL("https://cloon.ie"),
+    openGraph: {
+      title: settings.ogTitle,
+      description: settings.ogDescription,
+      url: "https://cloon.ie",
+      siteName: "Cloon Operations Advisory",
+      locale: "en_IE",
+      type: "website",
+    },
+  };
+}
 
 export default function RootLayout({
   children,

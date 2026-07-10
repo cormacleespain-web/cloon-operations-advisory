@@ -2,9 +2,10 @@ import { ArrowUpRight } from "lucide-react";
 
 import { Reveal } from "@/components/site/reveal";
 import { FacetField } from "@/components/brand/facet-field";
+import { RichInline, RichText } from "@/components/rich-text";
+import type { HeroContent } from "@/lib/content/schemas";
 
-/* EXAMPLE COPY — placeholder positioning for the meeting demo; Conor to refine. */
-export function Hero() {
+export function Hero({ content }: { content: HeroContent }) {
   return (
     <section
       id="top"
@@ -22,36 +23,35 @@ export function Hero() {
         <Reveal className="max-w-3xl">
           <p className="eyebrow">
             <span className="size-1.5 rounded-full bg-sage" aria-hidden />
-            Supply Chain &amp; Operations Advisory
+            {content.eyebrow}
           </p>
 
           <h1 className="mt-8 font-display text-[clamp(2.75rem,7vw,5.25rem)] font-medium leading-[0.98] tracking-[-0.03em] text-foreground">
-            Clearer operations.
+            {content.headingLine1}
             <br />
-            <span className="italic font-light">Stronger</span> supply chains.
+            <RichInline doc={content.headingLine2} />
           </h1>
 
-          <p className="mt-8 max-w-xl text-lg leading-relaxed text-muted-foreground sm:text-xl">
-            Cloon Operations Advisory helps manufacturers and growing businesses
-            untangle their supply chain and operations — turning day-to-day
-            firefighting into steady, dependable performance.
-          </p>
+          <RichText
+            doc={content.subheading}
+            className="mt-8 max-w-xl text-lg leading-relaxed text-muted-foreground sm:text-xl"
+          />
 
           <div className="mt-11 flex flex-col gap-4 sm:flex-row sm:items-center">
             <a
-              href="#contact"
+              href={content.primaryCta.href}
               className="group inline-flex items-center gap-3 rounded-full bg-primary py-2 pl-6 pr-2 text-base font-medium text-primary-foreground transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] hover:bg-primary/90 active:scale-[0.98] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ring"
             >
-              Start a conversation
+              {content.primaryCta.label}
               <span className="flex size-9 items-center justify-center rounded-full bg-background/15 transition-transform duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] group-hover:translate-x-0.5 group-hover:-translate-y-0.5">
                 <ArrowUpRight className="size-4" strokeWidth={1.75} aria-hidden />
               </span>
             </a>
             <a
-              href="#approach"
+              href={content.secondaryCta.href}
               className="inline-flex items-center justify-center rounded-full border border-border px-6 py-3.5 text-base font-medium text-foreground transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] hover:border-foreground/30 hover:bg-foreground/[0.03] active:scale-[0.98] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ring"
             >
-              See how I work
+              {content.secondaryCta.label}
             </a>
           </div>
         </Reveal>
