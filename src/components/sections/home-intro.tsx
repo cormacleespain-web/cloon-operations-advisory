@@ -1,5 +1,6 @@
 import { Reveal } from "@/components/site/reveal";
-import { RichInline, RichText } from "@/components/rich-text";
+import { RichInline } from "@/components/rich-text";
+import { ScrollInk } from "@/components/site/scroll-ink";
 import type { HomeIntroContent } from "@/lib/content/schemas";
 
 export function HomeIntro({ content }: { content: HomeIntroContent }) {
@@ -11,7 +12,7 @@ export function HomeIntro({ content }: { content: HomeIntroContent }) {
           <h2 className="mt-6 text-balance font-display text-4xl font-medium leading-[1.05] tracking-[-0.02em] text-foreground sm:text-5xl">
             <RichInline doc={content.heading} />
           </h2>
-          <RichText
+          <ScrollInk
             doc={content.body}
             className="mx-auto mt-6 max-w-2xl text-lg leading-relaxed text-muted-foreground"
           />

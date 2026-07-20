@@ -2,23 +2,36 @@ import type { ReactNode } from "react";
 
 import type { RichInline, RichText as RichTextDoc } from "@/lib/content/schemas";
 
-type Mark = { type: string; attrs?: { href?: string } };
-type TextNode = { type: string; text?: string; marks?: Mark[] };
-type ParagraphNode = { type: string; content?: TextNode[] };
+export type Mark = { type: string; attrs?: { href?: string } };
+export type TextNode = { type: string; text?: string; marks?: Mark[] };
+export type ParagraphNode = { type: string; content?: TextNode[] };
 
-const SAFE_HREF = /^(https?:\/\/|mailto:|#|\/)/;
+export const SAFE_HREF = /^(https?:\/\/|mailto:|#|\/)/;
 
-function renderTextNodes(nodes: TextNode[] | undefined): ReactNode {
+/**
+ * Walks allowlisted TipTap text nodes (bold/italic/link marks), applying each
+ * mark around a caller-supplied leaf renderer. Shared by RichText/RichInline
+ * (plain text leaves) and ScrollInk (word-wrapped leaves for the ink-in effect).
+ */
+export function renderTextNodes(
+  nodes: TextNode[] | undefined,
+  options?: {
+    renderLeaf?: (text: string, key: string) => ReactNode;
+    italicClassName?: string;
+  }
+): ReactNode {
+  const renderLeaf = options?.renderLeaf ?? ((text: string) => text);
+  const italicClassName = options?.italicClassName ?? "italic font-light";
   if (!nodes) return null;
   return nodes.map((node, i) => {
     if (node.type !== "text" || typeof node.text !== "string") return null;
-    let content: ReactNode = node.text;
+    let content: ReactNode = renderLeaf(node.text, `t-${i}`);
     for (const mark of node.marks ?? []) {
       if (mark.type === "bold") {
         content = <strong key={`b-${i}`}>{content}</strong>;
       } else if (mark.type === "italic") {
         content = (
-          <span key={`i-${i}`} className="italic font-light">
+          <span key={`i-${i}`} className={italicClassName}>
             {content}
           </span>
         );

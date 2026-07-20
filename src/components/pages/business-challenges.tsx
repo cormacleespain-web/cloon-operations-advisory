@@ -2,7 +2,8 @@ import { ArrowUpRight, Check } from "lucide-react";
 
 import { PageHero } from "@/components/site/page-hero";
 import { Reveal } from "@/components/site/reveal";
-import { RichInline, RichText } from "@/components/rich-text";
+import { ScrollInk } from "@/components/site/scroll-ink";
+import { RichText } from "@/components/rich-text";
 import type { BusinessChallengesContent } from "@/lib/content/schemas";
 
 export function BusinessChallengesPage({ content }: { content: BusinessChallengesContent }) {
@@ -13,9 +14,10 @@ export function BusinessChallengesPage({ content }: { content: BusinessChallenge
       <section className="section-dark border-b border-border/60">
         <div className="mx-auto max-w-4xl px-6 py-20 text-center sm:py-24 lg:px-8">
           <Reveal>
-            <p className="text-balance font-display text-3xl font-medium italic leading-[1.2] tracking-[-0.01em] text-foreground sm:text-4xl">
-              <RichInline doc={content.pullQuote} />
-            </p>
+            <ScrollInk
+              doc={content.pullQuote}
+              className="text-balance font-display text-3xl font-medium italic leading-[1.2] tracking-[-0.01em] text-foreground sm:text-4xl"
+            />
           </Reveal>
         </div>
       </section>
@@ -61,7 +63,7 @@ export function BusinessChallengesPage({ content }: { content: BusinessChallenge
                             <p className="text-sm font-medium text-muted-foreground">
                               {content.reviewLabels.reality}
                             </p>
-                            <RichText
+                            <ScrollInk
                               doc={review.reality}
                               className="mt-2 leading-relaxed text-foreground/90"
                             />

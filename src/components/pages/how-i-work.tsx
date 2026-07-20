@@ -2,6 +2,7 @@ import { ArrowUpRight, Check } from "lucide-react";
 
 import { PageHero } from "@/components/site/page-hero";
 import { Reveal } from "@/components/site/reveal";
+import { ScrollInk } from "@/components/site/scroll-ink";
 import { RichText } from "@/components/rich-text";
 import type { HowIWorkContent } from "@/lib/content/schemas";
 
@@ -16,9 +17,9 @@ export function HowIWorkPage({ content }: { content: HowIWorkContent }) {
             <h2 className="text-balance font-display text-3xl font-medium leading-[1.1] tracking-[-0.02em] text-foreground sm:text-4xl">
               {content.experience.heading}
             </h2>
-            <RichText
+            <ScrollInk
               doc={content.experience.body}
-              className="mt-6 space-y-5 text-lg leading-relaxed text-muted-foreground"
+              className="mt-6 text-lg leading-relaxed text-muted-foreground"
             />
           </Reveal>
         </div>
