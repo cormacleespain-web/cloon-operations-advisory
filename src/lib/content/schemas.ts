@@ -185,6 +185,129 @@ export const settingsSchema = z.object({
 });
 export type SettingsContent = z.infer<typeof settingsSchema>;
 
+export const seoSchema = z.object({
+  metaTitle: shortText(70, "Meta title"),
+  metaDescription: shortText(160, "Meta description"),
+});
+export type SeoContent = z.infer<typeof seoSchema>;
+
+/** Shared page-hero shape for the three new subpages. `intro` is optional — My Story's hero has none. */
+const pageHeroSchema = z.object({
+  eyebrow: shortText(80, "Eyebrow"),
+  heading: shortText(120, "Heading"),
+  intro: richText.optional(),
+});
+
+export const homeIntroSchema = z.object({
+  eyebrow: shortText(80, "Eyebrow"),
+  heading: richInline,
+  body: richText,
+});
+export type HomeIntroContent = z.infer<typeof homeIntroSchema>;
+
+export const homeExperienceSchema = z.object({
+  eyebrow: shortText(80, "Eyebrow"),
+  heading: richInline,
+  paragraphs: z.array(richText).min(1, "Add at least one paragraph.").max(6),
+  image: z
+    .object({
+      url: z.string().url(),
+      alt: shortText(200, "Alt text"),
+    })
+    .nullable(),
+});
+export type HomeExperienceContent = z.infer<typeof homeExperienceSchema>;
+
+export const homeTeasersSchema = z.object({
+  eyebrow: shortText(80, "Eyebrow"),
+  heading: shortText(160, "Heading"),
+  items: z
+    .array(
+      z.object({
+        title: shortText(80, "Title"),
+        body: richText,
+        cta,
+      })
+    )
+    .min(1, "Add at least one teaser.")
+    .max(4, "Up to 4 teasers."),
+});
+export type HomeTeasersContent = z.infer<typeof homeTeasersSchema>;
+
+const reviewLabelsSchema = z.object({
+  symptoms: shortText(120, "Symptoms heading"),
+  reality: shortText(120, "Reality heading"),
+  help: shortText(120, "Help heading"),
+  outcomes: shortText(120, "Outcomes heading"),
+});
+
+const reviewSchema = z.object({
+  title: shortText(120, "Review title"),
+  symptoms: z.array(shortText(200, "Symptom quote")).min(1).max(8),
+  reality: richText,
+  help: richText,
+  outcomes: z.array(shortText(160, "Outcome")).min(1).max(8),
+});
+
+export const businessChallengesSchema = z.object({
+  hero: pageHeroSchema,
+  pullQuote: richInline,
+  reviewLabels: reviewLabelsSchema,
+  areas: z
+    .array(
+      z.object({
+        title: shortText(120, "Area title"),
+        reviews: z.array(reviewSchema).min(1).max(4),
+      })
+    )
+    .min(1)
+    .max(4),
+  closing: z.object({
+    heading: shortText(160, "Heading"),
+    body: richText,
+    cta,
+  }),
+  seo: seoSchema,
+});
+export type BusinessChallengesContent = z.infer<typeof businessChallengesSchema>;
+
+export const howIWorkSchema = z.object({
+  hero: pageHeroSchema,
+  experience: z.object({
+    heading: shortText(160, "Heading"),
+    body: richText,
+  }),
+  principles: z
+    .array(
+      z.object({
+        title: shortText(80, "Title"),
+        body: richText,
+      })
+    )
+    .length(5, "Exactly 5 principles."),
+  expectations: z.object({
+    heading: shortText(160, "Heading"),
+    items: z.array(shortText(160, "Item")).min(1).max(8),
+  }),
+  outcome: z.object({
+    heading: shortText(160, "Heading"),
+    body: richText,
+  }),
+  cta,
+  seo: seoSchema,
+});
+export type HowIWorkContent = z.infer<typeof howIWorkSchema>;
+
+export const myStorySchema = z.object({
+  hero: pageHeroSchema,
+  paragraphsBefore: z.array(richText).min(1).max(8),
+  pullQuote: richInline,
+  paragraphsAfter: z.array(richText).min(1).max(8),
+  cta,
+  seo: seoSchema,
+});
+export type MyStoryContent = z.infer<typeof myStorySchema>;
+
 export const sectionSchemas = {
   hero: heroSchema,
   services: servicesSchema,
@@ -195,6 +318,12 @@ export const sectionSchemas = {
   navigation: navigationSchema,
   footer: footerSchema,
   settings: settingsSchema,
+  homeIntro: homeIntroSchema,
+  homeExperience: homeExperienceSchema,
+  homeTeasers: homeTeasersSchema,
+  businessChallenges: businessChallengesSchema,
+  howIWork: howIWorkSchema,
+  myStory: myStorySchema,
 } as const;
 
 export type SectionKey = keyof typeof sectionSchemas;
@@ -234,6 +363,17 @@ export function inlineDocFromParts(parts: DocPart[]): RichInline {
   return {
     type: "doc",
     content: [{ type: "paragraph", content: partsToTextNodes(parts) }],
+  };
+}
+
+/** Build a multi-paragraph doc from per-paragraph part lists, optionally with italic marks. */
+export function docFromParts(paragraphs: DocPart[][]): RichText {
+  return {
+    type: "doc",
+    content: paragraphs.map((parts) => ({
+      type: "paragraph" as const,
+      content: partsToTextNodes(parts),
+    })),
   };
 }
 
