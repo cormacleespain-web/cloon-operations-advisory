@@ -37,6 +37,9 @@ yarn-error.log*
 # vercel
 .vercel
 
+# client-supplied source docs, never committed
+/Client Documents/
+
 # typescript
 *.tsbuildinfo
 next-env.d.ts
