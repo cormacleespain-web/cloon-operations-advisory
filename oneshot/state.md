@@ -1,15 +1,19 @@
 # State
 
-**Current stage:** in progress — Increment 6 (final verification + docs)
-**Active task:** client-copy-pages multi-page restructure (feature/client-copy-pages, local only)
+**Current stage:** idle (task complete — 6 increments, local branch, not shipped)
+**Active task:** none
 **Task size:** Project
 **Primary taste authority:** `high-end-visual-design` + `impeccable` polish (restyle); `ui-ux-pro-max` tokens retained
-**Status:** Increments 0-5 done (CMS merge, content model, admin editors, 3 new subpages + nav,
-home restructure, ScrollInk). Business Challenges / How I Work / My Story live with verbatim
-client copy. ScrollInk (CSS-only, `animation-timeline: view()`) applied to both pull quotes,
-homeIntro's opening body, How I Work's experience body, and each review's "What's Really
-Happening?" paragraph — Firefox/reduced-motion/no-JS all fall back to static full-colour text.
-Now running build/lint/copy-diff verification and full browser QA before final commit.
+**Status:** client-copy-pages shipped to `feature/client-copy-pages` (6 commits, local only —
+never pushed, never merged; Cormac reviews and ships himself). Multi-page restructure around
+Conor's first real copy batch: `/business-challenges`, `/how-i-work`, `/my-story` with
+verbatim-locked client wording; home restructured as a shortened lead-in; ScrollInk
+scroll-linked ink-in on pull quotes + key intros; nav/footer converted to next/link with
+route-aware active state. Copy verified against source via automated diff (one dropped
+subheading caught and fixed). Full QA: `oneshot/qa/client-copy-pages.md`. **One blocking
+step before this is fully live: the DB cutover DELETE on production Neon** — deferred by
+explicit instruction (no Neon branch access this session), documented in PROJECT.md
+"Current state" and the QA doc's "Known-deferred" section.
 
 ## Pointers
 - Brief: see `brief.md`

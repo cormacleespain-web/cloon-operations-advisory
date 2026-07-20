@@ -8,10 +8,12 @@ Update when architecture/services/conventions change. Compressed on purpose.
 Marketing site for **Conor Lee**, supply-chain consultant. Trading name **Cloon
 Operations Advisory**, target domain **cloon.ie** (not bought yet). Personal favour
 project — NOT Dow Jones/DJP/Andes. Global Andes/Artifactory rules do not apply.
-Single-page public scroll site, now driven entirely by CMS content, plus a full
-Admin CMS (auth, section editors, media library, draft/publish/revisions) built on
-`feature/admin-cms` — not yet merged to `main`. Copy is still example placeholder;
-About section has `[bracketed]` facts awaiting Conor's real details.
+Four-page public site (`/`, `/business-challenges`, `/how-i-work`, `/my-story`),
+driven entirely by CMS content, plus a full Admin CMS (auth, section editors, media
+library, draft/publish/revisions). Copy is Conor's real, verbatim-locked first batch
+(17 Jul 2026) on the three subpages — no more `[bracketed]` placeholders; the old
+placeholder About section is retired. Home is a shortened, adapted lead-in into the
+three subpages (the one place wording may deviate from the source docs).
 
 ## Stack
 
@@ -35,7 +37,10 @@ About section has `[bracketed]` facts awaiting Conor's real details.
 
 ```
 src/app/
-  page.tsx            Home: fetches getPublishedContent(), renders <SiteRenderer>
+  page.tsx                         Home: getPublishedContent() -> <SiteRenderer page="home">
+  business-challenges/page.tsx     Each ~15 lines: getPublishedContent() -> <SiteRenderer
+  how-i-work/page.tsx                page="...">, + generateMetadata() from that page's
+  my-story/page.tsx                  own `seo` field (title/description/OG)
   layout.tsx          Fonts, generateMetadata() from CMS settings, dark-mode script, skip link
   globals.css         ALL design tokens + component classes (see Design system)
   actions/contact.ts  Public contact form action
@@ -46,30 +51,54 @@ src/app/
   api/media/upload/route.ts         Vercel Blob client-upload token route (handleUpload)
   login/                            Sign-in, forgot, reset password pages (public)
   admin/
-    preview/page.tsx                Draft-content site preview; sibling of (dashboard),
-                                     NOT wrapped in the admin sidebar layout
+    preview/page.tsx                Draft-content site preview; sibling of (dashboard), NOT
+                                     wrapped in the admin sidebar layout. `?page=` search param
+                                     (async, Next 16) selects which of the 4 pages to preview;
+                                     banner has a page-switcher matching each editor's
+                                     PublishBar previewHref
     (dashboard)/                    Route group — owns the sidebar/guard layout so
                                      /admin/preview can render the bare public site
       layout.tsx                   AdminSidebar + AdminGuard, each in its own Suspense
-      page.tsx                     Overview: per-section publish status cards
-      sections/[key]/page.tsx      Dispatches to the right editor for the 6 homepage keys
+      page.tsx                     Overview: publish-status cards grouped by sectionMeta.group
+                                    (Homepage / Pages / Site)
+      sections/[key]/page.tsx      Dispatches to the right editor; EDITOR_KEYS is the
+                                    source of truth for which keys have a /sections/[key] editor
       navigation/page.tsx          Tabs: NavigationEditor + FooterEditor
       settings/page.tsx            Site title/description/OG fields
       media/page.tsx               Full media library
 src/components/
-  site-renderer.tsx      Shared by the homepage AND admin draft preview — one component,
-                         two content sources (published vs draft), so they can't drift
-  rich-text.tsx          <RichText>/<RichInline> — renders the TipTap JSON allowlist
-  brand/, site/          Unchanged from pre-CMS (logo, wordmark, facet-field, reveal)
-  sections/*.tsx         Now all props-driven (content: HeroContent etc.), zero hardcoded copy
+  site-renderer.tsx      Shared by all 4 public routes AND admin draft preview — one
+                         component, `page: SitePage` param picks the body, two content
+                         sources (published vs draft) so preview can't visually drift
+  rich-text.tsx          <RichText>/<RichInline> render the TipTap JSON allowlist; also
+                         exports `renderTextNodes` (parameterized: leaf renderer + italic
+                         class) so ScrollInk reuses the same bold/italic/link mark logic
+  site/
+    page-hero.tsx         Shared hero band for the 3 subpages (eyebrow/heading/optional intro)
+    scroll-ink.tsx         Server component, zero JS. Wraps a rich-text doc's words in
+                          `.ink-word` spans for the CSS scroll-linked ink-in effect (see
+                          Design system). `aria-hidden` visual layer + `sr-only` plain-text
+                          duplicate; renders one block span per paragraph (same className
+                          contract as RichText's per-<p> className)
+    site-header.tsx        next/link nav, `usePathname()`-driven active state (exact match;
+                          hash/external links never active), logo -> Link href="/"
+    Everything else unchanged from pre-restructure (logo, wordmark, facet-field, reveal)
+  pages/                  One file per subpage body: business-challenges.tsx, how-i-work.tsx,
+                          my-story.tsx — composed from PageHero + section-style bands
+  sections/*.tsx          Home only now: hero, home-intro, home-teasers, home-experience,
+                          contact. (services/approach/about/positioning retired — deleted,
+                          not archived; their content_sections rows are simply ignored)
   admin/
     sidebar.tsx, admin-guard.tsx, content-skeleton.tsx, sidebar-skeleton.tsx
     section-editor-layout.tsx, publish-bar.tsx, revision-history.tsx
     rich-field-editor.tsx           TipTap editor + Bold/Italic/Link toolbar
-    fields/                        text, rich, cta, icon-picker, image, list-editor (generic
-                                   reorder/duplicate/delete wrapper)
-    editors/                       One file per section (hero/services/approach/about/
-                                   positioning/contact/navigation/footer/settings)
+    fields/                        text, rich, cta, icon-picker, image, seo, list-editor
+                                   (generic reorder/duplicate/delete wrapper — nests: proven
+                                   on Business Challenges' area -> review structure)
+    editors/                       One file per section. Page editors (business-challenges,
+                                   how-i-work, my-story) add a "Search & sharing" SeoField
+                                   fieldset and set PublishBar previewHref to
+                                   `/admin/preview?page=<key>`
     media/                         dropzone, media-grid, media-library, media-picker
   ui/                     shadcn baseline (Base UI flavour) — don't hand-edit style system
 src/lib/
@@ -77,10 +106,14 @@ src/lib/
   rate-limit.ts           DB-backed login/reset rate limiting
   media-client.ts         Client-side upload helper (dimension capture + Blob upload + DB record)
   content/
-    schemas.ts            Zod per section + doc builders (docFromText, emptyRichText, ...)
-    defaults.ts           Typed fallback content = today's hardcoded copy, converted
+    schemas.ts            Zod per section + doc builders (docFromText, docFromParts,
+                          inlineDocFromParts, emptyRichText, ...). `pageHeroSchema` and
+                          `seoSchema` are shared shapes reused across the 3 subpage schemas
+    defaults.ts           Typed fallback content. Subpage defaults are the verbatim client
+                          copy — top-commented `VERBATIM, do not "fix" spelling/punctuation`
     icons.tsx             Curated lucide icon allowlist for the icon picker
-    meta.ts                Admin nav titles/descriptions per section
+    meta.ts               Admin nav titles/descriptions/group per section — sidebar and
+                          overview both derive their groupings from this, no hardcoded lists
     queries.ts            getPublishedContent (cached, tag "content"), getDraftContent,
                            getAllDraftContent, getContentOverview, getCurrentYear (cached,
                            since Cache Components forbids bare `new Date()` in a Server Component)
@@ -107,6 +140,11 @@ oneshot/                 Design pipeline docs: state.md (read first), brief, des
 - Motion language: `cubic-bezier(0.32,0.72,0,1)`, 500-900ms, blur-fade reveals,
   button-in-button arrow CTAs (`rounded-full` pill + nested icon circle),
   `active:scale-[0.98]`. All reduced-motion safe (global media query kills animation)
+- **ScrollInk** (`.ink-word` in globals.css): CSS-only scroll-linked "ink-in" on select pull
+  quotes/intros — `animation-timeline: view()`, gated behind
+  `@supports (animation-timeline: view()) { @media (prefers-reduced-motion: no-preference) }`
+  so Firefox/reduced-motion/no-JS all fall through to static full-colour text automatically.
+  See `src/components/site/scroll-ink.tsx`
 - Taste authority (oneshot): `high-end-visual-design` + `impeccable` polish; one authority
   at a time — don't mix other taste skills
 
@@ -158,6 +196,20 @@ via Navigation & Footer, no longer hardcoded.
 12. **Base UI `AlertDialogAction` does not auto-close the dialog** (unlike Radix). Every
     confirm dialog (Publish/Discard/Delete/Restore) must control `open` state itself and
     close it in the action's `onClick`, or the dialog is left open after a successful action
+13. **`neonctl` needs interactive browser OAuth** — doesn't work in a non-interactive agent
+    session (60s timeout waiting for a browser that isn't there). No `NEON_API_KEY` is set
+    in `.env.local` either. Creating a Neon branch for isolated local testing currently
+    requires Cormac to do it himself (console or `neonctl auth` in his own terminal first)
+14. **Preview MCP's browser tab reports `document.hidden === true`** (backgrounded at the
+    OS/compositor level even though it's the "active" preview tab). This throttles
+    `requestAnimationFrame`, so anything relying on `scroll-behavior: smooth` — anchor-scroll,
+    `animation-timeline: view()` — never visibly animates under `javascript_tool` exec or
+    screenshots, even though it's correctly wired (verify via `CSS.supports`, computed
+    `animationName`/`animationTimeline`, or explicit `behavior:'instant'` scrolls instead)
+15. **Full-page/tall-viewport screenshots can visually duplicate `position: fixed` elements**
+    (the fixed header showing twice, at the wrong offset) — a capture-technique artifact, not
+    a real bug. Confirm via `document.querySelectorAll('header').length` before assuming a
+    duplicate-render regression
 
 ## Commands
 
@@ -165,34 +217,44 @@ via Navigation & Footer, no longer hardcoded.
 `npm run db:push` / `db:seed` / `db:seed-admin` (drizzle-kit + admin user, reads .env.local) ·
 `npm run lint`
 
-## Current state (2026-07-10)
+## Current state (2026-07-20)
 
-`main` unchanged since the premium restyle. Admin CMS fully built on `feature/admin-cms`
-(11 commits) — auth, section editors for all 9 content areas, draft/publish/revision
-history, media library, draft preview — build/lint/typecheck clean, verified end-to-end
-in browser (login, edit→publish→live-update, revision restore, media upload/delete).
-**Not merged to main. Awaiting review.**
+`main` has the admin CMS merged and pushed (content identical, safe deploy). All
+multi-page restructure work is on local branch `feature/client-copy-pages` — **6 commits,
+one per increment, never pushed, never merged.** Cormac reviews and ships it himself.
+Build/lint clean at every commit; zero DB schema migrations for the whole task. Full QA
+notes: `oneshot/qa/client-copy-pages.md`.
+
+**Before merging/shipping this branch:** run the DB cutover
+(`DELETE FROM content_sections; DELETE FROM content_revisions;`) on the production Neon
+branch, with Cormac's explicit confirmation — the `hero` row is stale (pre-restructure
+copy) and would otherwise keep serving old text after this branch goes live. Every other
+touched key has no row yet and already serves the new copy.
 
 ## Open items
 
 - Buy cloon.ie; add to Vercel; verify domain in Resend; set `CONTACT_FROM_EMAIL`
   + real `CONTACT_TO_EMAIL`
-- Replace About `[placeholders]` + real LinkedIn/phone (now editable via Admin → About/Contact)
-- Review + merge `feature/admin-cms`, then remove `ADMIN_INITIAL_PASSWORD` from `.env.local`
-  if still set
-- Alt-text-on-blur in the media library could not be interactively verified in the sandboxed
-  preview browser (no real OS focus) — code-reviewed, matches other verified save paths
-- Possible next: "visual direction v2" branch (user mentioned; not created yet)
+- **Run the DB cutover at go-live** (see above) — the one blocking step before this
+  branch's content is fully live
+- Real photo for Home — Experience (`homeExperience.image`) — currently the facet-mark
+  placeholder, same as the old About section always was
+- A Neon DB branch for isolated local testing needs Cormac to set up `neonctl auth` (or an
+  API key) himself first — see Gotcha #13
+- Possible next: "visual direction v2" branch (mentioned previously; not created)
 
-## Review findings (2026-07-10, non-blocking)
+## Review findings (2026-07-20, non-blocking)
 
-- `wordmark.tsx` `full` variant dead code — keep (footer/future) or strip
-- `site-header.tsx` uses `window scroll` listener for condense state — fine (cheap
+- `wordmark.tsx` `full` variant dead code — carried over, still unused
+- `site-header.tsx` uses a `window` scroll listener for condense state — fine (cheap
   boolean flip), but don't extend it for continuous scroll animation
 - `db/seed.ts` (legacy `users` table) ships in prod bundle though unused — harmless,
   revisit at cleanup alongside deciding whether to drop the `users` table entirely
-  now that `admin_users` exists
-- Honeypot uses `aria-hidden` div + `tabIndex={-1}` — correct, leave as is
-- `ImageField`'s media picker replaced the old manual URL-paste flow entirely — no
-  fallback path if Blob is ever unreachable, but that's the correct tradeoff for a
-  non-technical admin
+- Business Challenges' second area ("Manufacturing Capacity") has no category label in
+  the client doc the way the other two do ("Operational Performance", "Transformation
+  Readiness") — `"Manufacturing Capacity"` as the area title is an inferred structural
+  label, not verbatim client text; the review title itself ("Manufacturing Capacity
+  Review") is verbatim
+- Cross-page `/#contact` anchor-scroll and the ScrollInk ink-in animation could not be
+  visually verified frame-by-frame in this session's preview browser (see Gotcha #14) —
+  verified instead via hrefs/target ids, `CSS.supports`, and computed animation properties
