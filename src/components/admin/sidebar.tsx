@@ -5,16 +5,10 @@ import { auth } from "@/auth";
 import { logout } from "@/app/actions/auth";
 import { Wordmark } from "@/components/brand/wordmark";
 import { sectionMeta } from "@/lib/content/meta";
-import type { SectionKey } from "@/lib/content/schemas";
+import { sectionKeys } from "@/lib/content/schemas";
 
-const HOMEPAGE_SECTIONS: SectionKey[] = [
-  "hero",
-  "services",
-  "approach",
-  "about",
-  "positioning",
-  "contact",
-];
+const HOMEPAGE_SECTIONS = sectionKeys.filter((key) => sectionMeta[key].group === "Homepage");
+const PAGE_SECTIONS = sectionKeys.filter((key) => sectionMeta[key].group === "Pages");
 
 const linkClass =
   "flex min-h-10 items-center rounded-lg px-3 text-sm text-sidebar-foreground/80 transition-colors hover:bg-sidebar-accent hover:text-sidebar-accent-foreground focus-visible:bg-sidebar-accent focus-visible:text-sidebar-accent-foreground focus-visible:outline-none";
@@ -42,6 +36,19 @@ export async function AdminSidebar() {
           <p className="eyebrow px-3">Homepage</p>
           <ul className="mt-2 space-y-0.5">
             {HOMEPAGE_SECTIONS.map((key) => (
+              <li key={key}>
+                <Link href={`/admin/sections/${key}`} className={linkClass}>
+                  {sectionMeta[key].title}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        <div>
+          <p className="eyebrow px-3">Pages</p>
+          <ul className="mt-2 space-y-0.5">
+            {PAGE_SECTIONS.map((key) => (
               <li key={key}>
                 <Link href={`/admin/sections/${key}`} className={linkClass}>
                   {sectionMeta[key].title}
