@@ -21,12 +21,12 @@ export async function SiteFooter({ content }: { content: FooterContent }) {
             <ul className="flex flex-wrap gap-x-8 gap-y-3">
               {content.links.map((item) => (
                 <li key={item.href}>
-                  <a
+                  <Link
                     href={item.href}
                     className="text-sm text-muted-foreground transition-colors hover:text-foreground focus-visible:text-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
                   >
                     {item.label}
-                  </a>
+                  </Link>
                 </li>
               ))}
             </ul>

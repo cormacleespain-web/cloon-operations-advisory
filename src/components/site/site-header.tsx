@@ -1,6 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { MenuIcon } from "lucide-react";
 
 import { cn } from "@/lib/utils";
@@ -15,8 +17,14 @@ import {
 import { Wordmark } from "@/components/brand/wordmark";
 import type { NavigationContent } from "@/lib/content/schemas";
 
+/** In-page anchors (#…) and external links are never "active" — only exact route matches. */
+function isActiveHref(href: string, pathname: string) {
+  return href.startsWith("/") && href === pathname;
+}
+
 export function SiteHeader({ content }: { content: NavigationContent }) {
   const navItems = content.items;
+  const pathname = usePathname();
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
 
@@ -38,31 +46,41 @@ export function SiteHeader({ content }: { content: NavigationContent }) {
               : "border-transparent bg-background/40"
           )}
         >
-          <a
-            href="#top"
+          <Link
+            href="/"
             className="rounded-full focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ring"
-            aria-label="Cloon Operations Advisory — back to top"
+            aria-label="Cloon Operations Advisory — home"
           >
             <Wordmark variant="compact" />
-          </a>
+          </Link>
 
           {/* Desktop nav */}
           <nav aria-label="Primary" className="hidden md:block">
             <ul className="flex items-center gap-1">
-              {navItems.map((item) => (
-                <li key={item.href}>
-                  <a
-                    href={item.href}
-                    className="inline-flex h-9 items-center rounded-full px-4 text-sm font-medium text-muted-foreground transition-colors duration-300 hover:text-foreground focus-visible:text-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
-                  >
-                    {item.label}
-                  </a>
-                </li>
-              ))}
+              {navItems.map((item) => {
+                const active = isActiveHref(item.href, pathname);
+                return (
+                  <li key={item.href}>
+                    <Link
+                      href={item.href}
+                      aria-current={active ? "page" : undefined}
+                      className={cn(
+                        "inline-flex h-9 items-center gap-2 rounded-full px-4 text-sm font-medium transition-colors duration-300 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring",
+                        active
+                          ? "text-foreground"
+                          : "text-muted-foreground hover:text-foreground focus-visible:text-foreground"
+                      )}
+                    >
+                      {active && <span className="size-1.5 rounded-full bg-sage" aria-hidden />}
+                      {item.label}
+                    </Link>
+                  </li>
+                );
+              })}
             </ul>
           </nav>
 
-          <a
+          <Link
             href={content.cta.href}
             className={cn(
               buttonVariants({ size: "lg" }),
@@ -70,7 +88,7 @@ export function SiteHeader({ content }: { content: NavigationContent }) {
             )}
           >
             {content.cta.label}
-          </a>
+          </Link>
 
           {/* Mobile menu */}
           <Sheet open={open} onOpenChange={setOpen}>
@@ -95,21 +113,29 @@ export function SiteHeader({ content }: { content: NavigationContent }) {
               </SheetHeader>
               <nav aria-label="Mobile" className="px-3">
                 <ul className="flex flex-col gap-1">
-                  {navItems.map((item) => (
-                    <li key={item.href}>
-                      <a
-                        href={item.href}
-                        onClick={() => setOpen(false)}
-                        className="flex min-h-12 items-center rounded-xl px-4 text-lg font-medium text-foreground transition-colors hover:bg-accent focus-visible:bg-accent focus-visible:outline-none"
-                      >
-                        {item.label}
-                      </a>
-                    </li>
-                  ))}
+                  {navItems.map((item) => {
+                    const active = isActiveHref(item.href, pathname);
+                    return (
+                      <li key={item.href}>
+                        <Link
+                          href={item.href}
+                          onClick={() => setOpen(false)}
+                          aria-current={active ? "page" : undefined}
+                          className={cn(
+                            "flex min-h-12 items-center gap-2.5 rounded-xl px-4 text-lg font-medium transition-colors hover:bg-accent focus-visible:bg-accent focus-visible:outline-none",
+                            active ? "text-foreground" : "text-foreground/80"
+                          )}
+                        >
+                          {active && <span className="size-1.5 rounded-full bg-sage" aria-hidden />}
+                          {item.label}
+                        </Link>
+                      </li>
+                    );
+                  })}
                 </ul>
               </nav>
               <div className="mt-auto p-4">
-                <a
+                <Link
                   href={content.cta.href}
                   onClick={() => setOpen(false)}
                   className={cn(
@@ -118,7 +144,7 @@ export function SiteHeader({ content }: { content: NavigationContent }) {
                   )}
                 >
                   {content.cta.label}
-                </a>
+                </Link>
               </div>
             </SheetContent>
           </Sheet>

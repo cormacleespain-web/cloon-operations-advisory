@@ -166,12 +166,12 @@ export const contactDefault: ContactContent = {
 
 export const navigationDefault: NavigationContent = {
   items: [
-    { label: "Services", href: "#services" },
-    { label: "Approach", href: "#approach" },
-    { label: "About", href: "#about" },
-    { label: "Contact", href: "#contact" },
+    { label: "Business Challenges", href: "/business-challenges" },
+    { label: "How I Work", href: "/how-i-work" },
+    { label: "My Story", href: "/my-story" },
+    { label: "Contact", href: "/#contact" },
   ],
-  cta: { label: "Get in touch", href: "#contact" },
+  cta: { label: "Get in touch", href: "/#contact" },
 };
 
 export const footerDefault: FooterContent = {
@@ -179,10 +179,10 @@ export const footerDefault: FooterContent = {
     "Practical supply chain and operations advisory, rooted in the West of Ireland and built on hands-on experience."
   ),
   links: [
-    { label: "Services", href: "#services" },
-    { label: "Approach", href: "#approach" },
-    { label: "About", href: "#about" },
-    { label: "Contact", href: "#contact" },
+    { label: "Business Challenges", href: "/business-challenges" },
+    { label: "How I Work", href: "/how-i-work" },
+    { label: "My Story", href: "/my-story" },
+    { label: "Contact", href: "/#contact" },
   ],
   copyrightName: "Cloon Operations Advisory",
   email: "hello@cloon.ie",
