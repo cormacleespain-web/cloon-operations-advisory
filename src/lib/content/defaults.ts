@@ -269,7 +269,7 @@ export const businessChallengesDefault: BusinessChallengesContent = {
 // Client copy 17 Jul 2026 — VERBATIM, do not "fix" spelling/punctuation.
 export const howIWorkDefault: HowIWorkContent = {
   hero: {
-    eyebrow: "The Approach",
+    eyebrow: "Working Together",
     heading: "How I Work",
     intro: docFromText(
       "Every organisation is different. Rather than applying a standard methodology or promoting a preferred solution, I work alongside leadership teams to understand their business, challenge assumptions where appropriate and help them make confident, evidence-based decisions."
