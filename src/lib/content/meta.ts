@@ -9,26 +9,6 @@ export const sectionMeta: Record<
     description: "The first thing visitors see — headline, intro and buttons.",
     group: "Homepage",
   },
-  services: {
-    title: "Services",
-    description: "What you do — the list of service cards.",
-    group: "Homepage",
-  },
-  approach: {
-    title: "How I work",
-    description: "The step-by-step engagement process.",
-    group: "Homepage",
-  },
-  about: {
-    title: "About",
-    description: "Your story, photo, and background.",
-    group: "Homepage",
-  },
-  positioning: {
-    title: "Why Cloon",
-    description: "The closing pitch and three pillars.",
-    group: "Homepage",
-  },
   contact: {
     title: "Contact",
     description: "Contact intro and direct contact methods.",

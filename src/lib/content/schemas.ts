@@ -69,67 +69,6 @@ export const heroSchema = z.object({
 });
 export type HeroContent = z.infer<typeof heroSchema>;
 
-export const servicesSchema = z.object({
-  eyebrow: shortText(80, "Eyebrow"),
-  heading: shortText(160, "Heading"),
-  intro: richText,
-  items: z
-    .array(
-      z.object({
-        icon: iconKey,
-        title: shortText(80, "Title"),
-        body: richText,
-      })
-    )
-    .min(1, "Add at least one service.")
-    .max(8, "Up to 8 services."),
-});
-export type ServicesContent = z.infer<typeof servicesSchema>;
-
-export const approachSchema = z.object({
-  eyebrow: shortText(80, "Eyebrow"),
-  heading: shortText(160, "Heading"),
-  intro: richText,
-  steps: z
-    .array(
-      z.object({
-        title: shortText(80, "Title"),
-        body: richText,
-      })
-    )
-    .min(1, "Add at least one step.")
-    .max(8, "Up to 8 steps."),
-});
-export type ApproachContent = z.infer<typeof approachSchema>;
-
-export const aboutSchema = z.object({
-  eyebrow: shortText(80, "Eyebrow"),
-  heading: richInline,
-  paragraphs: z.array(richText).min(1, "Add at least one paragraph.").max(6),
-  image: z
-    .object({
-      url: z.string().url(),
-      alt: shortText(200, "Alt text"),
-    })
-    .nullable(),
-});
-export type AboutContent = z.infer<typeof aboutSchema>;
-
-export const positioningSchema = z.object({
-  heading: richInline,
-  pillars: z
-    .array(
-      z.object({
-        title: shortText(80, "Title"),
-        body: shortText(300, "Description"),
-      })
-    )
-    .min(1, "Add at least one pillar.")
-    .max(6),
-  cta,
-});
-export type PositioningContent = z.infer<typeof positioningSchema>;
-
 export const contactSchema = z.object({
   eyebrow: shortText(80, "Eyebrow"),
   heading: shortText(160, "Heading"),
@@ -310,10 +249,6 @@ export type MyStoryContent = z.infer<typeof myStorySchema>;
 
 export const sectionSchemas = {
   hero: heroSchema,
-  services: servicesSchema,
-  approach: approachSchema,
-  about: aboutSchema,
-  positioning: positioningSchema,
   contact: contactSchema,
   navigation: navigationSchema,
   footer: footerSchema,

@@ -1,10 +1,9 @@
 import { SiteHeader } from "@/components/site/site-header";
 import { SiteFooter } from "@/components/site/site-footer";
 import { Hero } from "@/components/sections/hero";
-import { Services } from "@/components/sections/services";
-import { Approach } from "@/components/sections/approach";
-import { About } from "@/components/sections/about";
-import { Positioning } from "@/components/sections/positioning";
+import { HomeIntro } from "@/components/sections/home-intro";
+import { HomeTeasers } from "@/components/sections/home-teasers";
+import { HomeExperience } from "@/components/sections/home-experience";
 import { Contact } from "@/components/sections/contact";
 import { BusinessChallengesPage } from "@/components/pages/business-challenges";
 import { HowIWorkPage } from "@/components/pages/how-i-work";
@@ -32,10 +31,9 @@ export function SiteRenderer({
         {page === "home" && (
           <>
             <Hero content={content.hero} />
-            <Services content={content.services} />
-            <Approach content={content.approach} />
-            <About content={content.about} />
-            <Positioning content={content.positioning} />
+            <HomeIntro content={content.homeIntro} />
+            <HomeTeasers content={content.homeTeasers} />
+            <HomeExperience content={content.homeExperience} />
             <Contact content={content.contact} />
           </>
         )}

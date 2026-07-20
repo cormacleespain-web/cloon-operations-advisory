@@ -4,11 +4,11 @@ import { LogoMark } from "@/components/brand/logo-mark";
 import { FacetField } from "@/components/brand/facet-field";
 import { Reveal } from "@/components/site/reveal";
 import { RichInline, RichText } from "@/components/rich-text";
-import type { AboutContent } from "@/lib/content/schemas";
+import type { HomeExperienceContent } from "@/lib/content/schemas";
 
-export function About({ content }: { content: AboutContent }) {
+export function HomeExperience({ content }: { content: HomeExperienceContent }) {
   return (
-    <section id="about" className="scroll-mt-28 border-b border-border/60 bg-background">
+    <section className="border-b border-border/60 bg-background">
       <div className="mx-auto max-w-6xl px-6 py-24 sm:py-32 lg:px-8">
         <div className="grid items-center gap-14 lg:grid-cols-[1.25fr_0.75fr] lg:gap-20">
           <Reveal>

@@ -3,10 +3,6 @@ import { notFound } from "next/navigation";
 
 import { getDraftContent } from "@/lib/content/queries";
 import { HeroEditor } from "@/components/admin/editors/hero-editor";
-import { ServicesEditor } from "@/components/admin/editors/services-editor";
-import { ApproachEditor } from "@/components/admin/editors/approach-editor";
-import { AboutEditor } from "@/components/admin/editors/about-editor";
-import { PositioningEditor } from "@/components/admin/editors/positioning-editor";
 import { ContactEditor } from "@/components/admin/editors/contact-editor";
 import { HomeIntroEditor } from "@/components/admin/editors/home-intro-editor";
 import { HomeExperienceEditor } from "@/components/admin/editors/home-experience-editor";
@@ -19,10 +15,6 @@ export const metadata: Metadata = { robots: { index: false, follow: false } };
 
 const EDITOR_KEYS = [
   "hero",
-  "services",
-  "approach",
-  "about",
-  "positioning",
   "contact",
   "homeIntro",
   "homeExperience",
@@ -48,14 +40,6 @@ export default async function SectionEditorPage({
   switch (key) {
     case "hero":
       return <HeroEditor initial={await getDraftContent("hero")} />;
-    case "services":
-      return <ServicesEditor initial={await getDraftContent("services")} />;
-    case "approach":
-      return <ApproachEditor initial={await getDraftContent("approach")} />;
-    case "about":
-      return <AboutEditor initial={await getDraftContent("about")} />;
-    case "positioning":
-      return <PositioningEditor initial={await getDraftContent("positioning")} />;
     case "contact":
       return <ContactEditor initial={await getDraftContent("contact")} />;
     case "homeIntro":
