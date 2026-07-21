@@ -218,31 +218,24 @@ via Navigation & Footer, no longer hardcoded.
 `npm run db:push` / `db:seed` / `db:seed-admin` (drizzle-kit + admin user, reads .env.local) ·
 `npm run lint`
 
-## Current state (2026-07-20)
+## Current state (2026-07-21)
 
-`main` has the admin CMS merged and pushed (content identical, safe deploy). All
-multi-page restructure work is on local branch `feature/client-copy-pages` — **6 commits,
-one per increment, never pushed, never merged.** Cormac reviews and ships it himself.
-Build/lint clean at every commit; zero DB schema migrations for the whole task. Full QA
-notes: `oneshot/qa/client-copy-pages.md`.
+**Shipped.** `feature/client-copy-pages` merged (ff-only) and pushed to `main`; Vercel
+auto-deployed. The production DB cutover (`DELETE FROM content_sections; DELETE FROM
+content_revisions;`) has been run for real on production Neon — confirmed via direct query
+(0 rows before the next publish) and via local dev pointed straight at production (hero
+shows the new copy, not the stale pre-restructure text). Verified first on a disposable
+Neon branch (`cutover-test`, off `main`) before touching prod; that branch has since been
+deleted, `.env.local` is back to the real `DATABASE_URL`. Full history in
+`oneshot/qa/client-copy-pages.md` and `oneshot/changelog.md`.
 
-**2026-07-21 update:** Cormac authenticated `neonctl` and the DB cutover was verified on a
-disposable Neon branch (`cutover-test`, off `main`) — the DELETE works, hero now serves new
-copy. `.env.local`'s `DATABASE_URL` currently points at that branch (backup of the real one
-at `.env.local.prod-backup`) so the local dev server reflects the fully cut-over site.
-**Production Neon has not been touched.** Before merging/shipping this branch: run the same
-DB cutover (`DELETE FROM content_sections; DELETE FROM content_revisions;`) on the
-production Neon branch, with Cormac's explicit confirmation, then delete the disposable
-`cutover-test` branch and restore `.env.local` from the backup.
+Site is now 4 pages (`/`, `/business-challenges`, `/how-i-work`, `/my-story`), Admin CMS
+live, zero DB schema migrations for the whole task, build/lint clean throughout.
 
 ## Open items
 
 - Buy cloon.ie; add to Vercel; verify domain in Resend; set `CONTACT_FROM_EMAIL`
   + real `CONTACT_TO_EMAIL`
-- **Run the DB cutover on production at go-live** (see above) — verified working on a
-  disposable branch, just needs running for real once this ships
-- Delete the disposable `cutover-test` Neon branch and restore `.env.local` from
-  `.env.local.prod-backup` once done reviewing locally
 - Real photo for Home — Experience (`homeExperience.image`) — currently the facet-mark
   placeholder, same as the old About section always was
 - Possible next: "visual direction v2" branch (mentioned previously; not created)

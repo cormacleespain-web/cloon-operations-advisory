@@ -1,19 +1,16 @@
 # State
 
-**Current stage:** idle (task complete — 6 increments, local branch, not shipped)
+**Current stage:** idle (task complete — shipped)
 **Active task:** none
 **Task size:** Project
 **Primary taste authority:** `high-end-visual-design` + `impeccable` polish (restyle); `ui-ux-pro-max` tokens retained
-**Status:** client-copy-pages shipped to `feature/client-copy-pages` (6 commits, local only —
-never pushed, never merged; Cormac reviews and ships himself). Multi-page restructure around
-Conor's first real copy batch: `/business-challenges`, `/how-i-work`, `/my-story` with
-verbatim-locked client wording; home restructured as a shortened lead-in; ScrollInk
-scroll-linked ink-in on pull quotes + key intros; nav/footer converted to next/link with
-route-aware active state. Copy verified against source via automated diff (one dropped
-subheading caught and fixed). Full QA: `oneshot/qa/client-copy-pages.md`. **One blocking
-step before this is fully live: the DB cutover DELETE on production Neon** — deferred by
-explicit instruction (no Neon branch access this session), documented in PROJECT.md
-"Current state" and the QA doc's "Known-deferred" section.
+**Status:** client-copy-pages shipped — merged to `main`, pushed, deployed. Multi-page
+restructure around Conor's first real copy batch: `/business-challenges`, `/how-i-work`,
+`/my-story` with verbatim-locked client wording; home restructured as a shortened lead-in;
+ScrollInk scroll-linked ink-in on pull quotes + key intros; nav/footer converted to
+next/link with route-aware active state. Copy verified against source via automated diff
+(one dropped subheading caught and fixed). Production DB cutover run for real (verified
+first on a disposable Neon branch). Full QA: `oneshot/qa/client-copy-pages.md`.
 
 ## Pointers
 - Brief: see `brief.md`

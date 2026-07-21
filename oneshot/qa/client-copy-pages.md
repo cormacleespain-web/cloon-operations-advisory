@@ -53,24 +53,21 @@ artifact, not a product bug, and verified by other means below.
    Found during this pass, fixed: `searchParams` now maps to a `SitePage`, with a
    page-switcher in the draft banner matching each editor's `PublishBar previewHref`.
 
-## Known-deferred (per plan, per Cormac's explicit instruction)
-- **DB cutover on *production*** (`DELETE FROM content_sections; DELETE FROM
-  content_revisions;`) has **not** run — only on the disposable `cutover-test` Neon branch
-  (see above), which proved the mechanism and confirmed the fix works. Production Neon still
-  has the same 4 rows the branch started with (`approach`/`about` orphaned, `hero` stale,
-  everything else already correct). **Go-live checklist:** run the same DELETE on the
-  production Neon branch, with Cormac's explicit confirmation, before or immediately after
-  this branch ships to `main`. The disposable `cutover-test` branch can be deleted once
-  Cormac's done reviewing (`neonctl branches delete cutover-test --project-id
-  delicate-recipe-39388607`) — currently the local dev server points at it via `.env.local`,
-  restore from `.env.local.prod-backup` first if reverting to the shared prod DB.
-- Revision-restore was not exercised live on a *new* page key (would have left a real
-  published row in the shared dev/prod DB without a safe way to clean it back up). The
-  underlying `RevisionHistory`/`restoreRevision` code is unchanged and generic over
-  `SectionKey` — already proven working pre-existing on `hero`/`contact` before this task.
+## Shipped (2026-07-21)
+`feature/client-copy-pages` merged (ff-only) into `main` and pushed at Cormac's explicit
+request. Vercel auto-deployed. Immediately after, ran the production DB cutover for real
+(`DELETE FROM content_sections; DELETE FROM content_revisions;`) on production Neon, with
+Cormac's explicit confirmation — same command already proven on the disposable `cutover-test`
+branch. Confirmed via direct query (0 rows) and via local dev pointed straight at production
+(hero serves the new copy). Disposable branch deleted, `.env.local` back to the real
+`DATABASE_URL`.
+
+- Revision-restore was not exercised live on a *new* page key during verification (would have
+  left a real published row in the shared dev/prod DB without a safe way to clean it back up
+  before the cutover). The underlying `RevisionHistory`/`restoreRevision` code is unchanged
+  and generic over `SectionKey` — already proven working pre-existing on `hero`/`contact`.
 
 ## Follow-ups (non-blocking)
 - Buy `cloon.ie`, verify domain in Resend, set `CONTACT_FROM_EMAIL` + real `CONTACT_TO_EMAIL`.
-- Run the DB cutover at go-live (see above).
 - Firefox real-device check for the `animation-timeline: view()` fallback (logic is a
   standard `@supports` gate; not independently verified on real Firefox this session).
