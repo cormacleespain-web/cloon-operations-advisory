@@ -196,10 +196,11 @@ via Navigation & Footer, no longer hardcoded.
 12. **Base UI `AlertDialogAction` does not auto-close the dialog** (unlike Radix). Every
     confirm dialog (Publish/Discard/Delete/Restore) must control `open` state itself and
     close it in the action's `onClick`, or the dialog is left open after a successful action
-13. **`neonctl` needs interactive browser OAuth** — doesn't work in a non-interactive agent
-    session (60s timeout waiting for a browser that isn't there). No `NEON_API_KEY` is set
-    in `.env.local` either. Creating a Neon branch for isolated local testing currently
-    requires Cormac to do it himself (console or `neonctl auth` in his own terminal first)
+13. **`neonctl` needs interactive browser OAuth** — doesn't work in a fully non-interactive
+    agent session (60s timeout waiting for a browser that isn't there); works fine once
+    Cormac has an authenticated browser tab open (confirmed 2026-07-21). No `NEON_API_KEY`
+    is set in `.env.local`. `npx neonctl projects list` / `branches list` prompt
+    interactively for org — pass `--org-id org-super-salad-90346770` to skip the prompt
 14. **Preview MCP's browser tab reports `document.hidden === true`** (backgrounded at the
     OS/compositor level even though it's the "active" preview tab). This throttles
     `requestAnimationFrame`, so anything relying on `scroll-behavior: smooth` — anchor-scroll,
@@ -225,22 +226,25 @@ one per increment, never pushed, never merged.** Cormac reviews and ships it him
 Build/lint clean at every commit; zero DB schema migrations for the whole task. Full QA
 notes: `oneshot/qa/client-copy-pages.md`.
 
-**Before merging/shipping this branch:** run the DB cutover
-(`DELETE FROM content_sections; DELETE FROM content_revisions;`) on the production Neon
-branch, with Cormac's explicit confirmation — the `hero` row is stale (pre-restructure
-copy) and would otherwise keep serving old text after this branch goes live. Every other
-touched key has no row yet and already serves the new copy.
+**2026-07-21 update:** Cormac authenticated `neonctl` and the DB cutover was verified on a
+disposable Neon branch (`cutover-test`, off `main`) — the DELETE works, hero now serves new
+copy. `.env.local`'s `DATABASE_URL` currently points at that branch (backup of the real one
+at `.env.local.prod-backup`) so the local dev server reflects the fully cut-over site.
+**Production Neon has not been touched.** Before merging/shipping this branch: run the same
+DB cutover (`DELETE FROM content_sections; DELETE FROM content_revisions;`) on the
+production Neon branch, with Cormac's explicit confirmation, then delete the disposable
+`cutover-test` branch and restore `.env.local` from the backup.
 
 ## Open items
 
 - Buy cloon.ie; add to Vercel; verify domain in Resend; set `CONTACT_FROM_EMAIL`
   + real `CONTACT_TO_EMAIL`
-- **Run the DB cutover at go-live** (see above) — the one blocking step before this
-  branch's content is fully live
+- **Run the DB cutover on production at go-live** (see above) — verified working on a
+  disposable branch, just needs running for real once this ships
+- Delete the disposable `cutover-test` Neon branch and restore `.env.local` from
+  `.env.local.prod-backup` once done reviewing locally
 - Real photo for Home — Experience (`homeExperience.image`) — currently the facet-mark
   placeholder, same as the old About section always was
-- A Neon DB branch for isolated local testing needs Cormac to set up `neonctl auth` (or an
-  API key) himself first — see Gotcha #13
 - Possible next: "visual direction v2" branch (mentioned previously; not created)
 
 ## Review findings (2026-07-20, non-blocking)

@@ -41,6 +41,7 @@ artifact, not a product bug, and verified by other means below.
 | ScrollInk (`animation-timeline: view()`) | ✅ `CSS.supports` true, `animationName`/`animationTimeline` correct on `.ink-word`, `aria-hidden` layer + `sr-only` plain-text duplicate both present and correctly paired |
 | Dark mode (all 3 new pages + restructured home) | ✅ `.section-dark` bands recolor correctly |
 | Light mode | ✅ alternating cream/navy area bands confirmed distinct (dark-mode screenshot initially made this ambiguous — re-verified in light) |
+| **DB cutover, local verification (2026-07-21)** | ✅ Cormac authenticated `neonctl` in-browser; created Neon branch `cutover-test` off `main`, ran the real cutover DELETE there (`content_sections`: 4 orphaned/stale rows → 0), pointed `.env.local` at it, restarted `next dev`, confirmed hero now serves new copy ("Helping Manufacturing Leaders...") instead of the stale pre-restructure text. Production untouched — see Known-deferred |
 
 ## Fixes made during verification (not separate increments)
 1. **"Working Together" dropped from How I Work.** The copy-diff script caught it: doc 3's
@@ -53,16 +54,16 @@ artifact, not a product bug, and verified by other means below.
    page-switcher in the draft banner matching each editor's `PublishBar previewHref`.
 
 ## Known-deferred (per plan, per Cormac's explicit instruction)
-- **DB cutover** (`DELETE FROM content_sections; DELETE FROM content_revisions;`) has **not**
-  run anywhere, including a Neon branch. `neonctl` needs interactive browser OAuth this
-  session couldn't provide (60s timeout, no `NEON_API_KEY` in `.env.local`); Cormac chose to
-  skip the local-branch verification step rather than unblock it. Consequence, confirmed by
-  a direct DB read: only the `hero` row is stale (old pre-restructure copy, published during
-  the Increment 0 roundtrip test) — `contact`/`navigation`/`footer`/`homeIntro`/
-  `homeExperience`/`homeTeasers` never had rows and already serve the new copy. `approach`/
-  `about` are harmless orphaned rows from the CMS branch's own verification, ignored by the
-  generic query layer. **Go-live checklist:** run the cutover DELETE on the production Neon
-  branch with Cormac's explicit confirmation before or immediately after this branch ships.
+- **DB cutover on *production*** (`DELETE FROM content_sections; DELETE FROM
+  content_revisions;`) has **not** run — only on the disposable `cutover-test` Neon branch
+  (see above), which proved the mechanism and confirmed the fix works. Production Neon still
+  has the same 4 rows the branch started with (`approach`/`about` orphaned, `hero` stale,
+  everything else already correct). **Go-live checklist:** run the same DELETE on the
+  production Neon branch, with Cormac's explicit confirmation, before or immediately after
+  this branch ships to `main`. The disposable `cutover-test` branch can be deleted once
+  Cormac's done reviewing (`neonctl branches delete cutover-test --project-id
+  delicate-recipe-39388607`) — currently the local dev server points at it via `.env.local`,
+  restore from `.env.local.prod-backup` first if reverting to the shared prod DB.
 - Revision-restore was not exercised live on a *new* page key (would have left a real
   published row in the shared dev/prod DB without a safe way to clean it back up). The
   underlying `RevisionHistory`/`restoreRevision` code is unchanged and generic over
